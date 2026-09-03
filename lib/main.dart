@@ -25,6 +25,15 @@ void main() async {
   ]);
 }
 
+// Disables the Android stretch/glow overscroll indicator app-wide so lists
+// simply stop at their edges with no extra visual effect.
+class NoOverscrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -36,6 +45,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       builder: EasyLoading.init(),
+      scrollBehavior: NoOverscrollBehavior(),
       theme: ThemeData(
         hintColor: Colors.white,
         appBarTheme: const AppBarTheme(

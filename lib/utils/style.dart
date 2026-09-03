@@ -51,6 +51,7 @@ const kScaffoldBackground = Color(0xFFF8F8F8);
 const kSubTitleTextColor = Color(0xFF485668);
 const itemSelectedColor = Color(0xFFF0F0F0);
 const kCardBackgroundColor = Color(0x0A091E42);
+const kSurfaceAltColor = Color(0xFFF1E7DA);
 const bottomNavBorderColor = Color(0xFFE8E8E8);
 const dividerColor = Color(0xFFDCDDDE80);
 const kFadedSmallTextStyle = TextStyle(

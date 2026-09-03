@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:dog_show/ui/breed_list_page.dart';
+import 'package:dog_show/ui/app_shell.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,11 @@ class _SplashScreenState extends BaseState<SplashScreen> {
   void initState() {
     super.initState();
 
-    isInternetConnected(context).then((internet) {
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      Get.offAll(() => const AppShell(), transition: sendTransition);
+    });
+
+    /*isInternetConnected(context).then((internet) {
       if (internet) {
         // Internet Present Case
 
@@ -33,7 +37,7 @@ class _SplashScreenState extends BaseState<SplashScreen> {
         // No-Internet Case
         showWarningDialog(context);
       }
-    });
+    });*/
   }
 
   @override

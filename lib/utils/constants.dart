@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -37,7 +40,7 @@ void closeSoftKeyBoard() {
 
 
 
-Future<bool> isInternetConnected(BuildContext context,
+/*Future<bool> isInternetConnected(BuildContext context,
     {bool isShowAlert = false}) async {
   bool isConnected = false;
 
@@ -48,6 +51,42 @@ Future<bool> isInternetConnected(BuildContext context,
       isConnected = true;
     }
   } catch (_) {}
+
+  if (isShowAlert && !isConnected) {
+    showMessage("Internet Connectivity Problem");
+  }
+
+  return isConnected;
+}*/
+
+Future<bool> isInternetConnected(BuildContext context,
+    {bool isShowAlert = false}) async {
+  bool isConnected = false;
+
+  try {
+    // First check if connected to network
+    var connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+
+      // Now verify actual internet by making a real request
+      try {
+        final result = await InternetAddress.lookup('google.com')
+            .timeout(const Duration(seconds: 5));
+
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          isConnected = true;
+        }
+      } on SocketException catch (_) {
+        isConnected = false;
+      } on TimeoutException catch (_) {
+        isConnected = false;
+      }
+    }
+  } catch (_) {
+    isConnected = false;
+  }
 
   if (isShowAlert && !isConnected) {
     showMessage("Internet Connectivity Problem");

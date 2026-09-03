@@ -15,9 +15,10 @@ class SubBreedController extends GetxController {
 
   var image = Rxn<String?>();
 
-  // Track the loading and loaded states
+  // Track the loading, loaded and error states
   bool isLoading = false;
   bool isLoaded = false;
+  bool hasError = false;
 
   @override
   void onInit() {
@@ -28,21 +29,24 @@ class SubBreedController extends GetxController {
   void callGetRandomImageBySubBreed(String breed, String subBreed) {
     var url = "/breed/$breed/$subBreed/images/random";
 
-    image.value = "";
+    image.value = null;
     isLoading = true;
+    isLoaded = false;
+    hasError = false;
+    update();
 
     _subBreedRepository.getRandomBySubBreed(url, (response, error) async {
-
       isLoading = false;
-      isLoaded = true;
 
       if (response != null) {
+        isLoaded = true;
         image.value = response.message;
-
-        update();
       } else {
+        hasError = true;
         showMessage(response?.status);
       }
+
+      update();
     });
   }
 
@@ -50,23 +54,22 @@ class SubBreedController extends GetxController {
     var url = "/breed/$breed/$subBreed/images";
 
     isLoading = true;
+    isLoaded = false;
+    hasError = false;
+    update();
 
     _subBreedRepository.getImageListBySubBreed(url, (response, error) async {
-
       isLoading = false;
-      isLoaded = true;
 
       if (response != null) {
-        breedImageList = [];
-
-        response.message?.forEach((element) {
-          breedImageList.add(element);
-
-          update();
-        });
+        isLoaded = true;
+        breedImageList = response.message ?? [];
       } else {
+        hasError = true;
         showMessage(response?.status);
       }
+
+      update();
     });
   }
 }
